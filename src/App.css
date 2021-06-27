@@ -5,26 +5,53 @@
   width: 100vw;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   padding: 5rem;
+}
+
+header {
+  justify-self: flex-start;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
 }
 
 .heading {
   margin: 0;
-  font-size: 2.25rem;
+  font-size: 3.6rem;
   font-family: "DMSerifDisplay-Regular";
 }
 
 input {
+  font-family: "DMMono-Regular";
   background: none;
   border: none;
   border-bottom: 1px solid var(--black);
-  padding: 0 2rem 0.5rem 2rem;
-  margin: 2rem 0;
+  padding: 0 1rem 1rem 1rem;
+  margin: 5rem 0 3rem;
   outline: none;
 }
 
 input::placeholder {
   text-align: center;
   color: var(--tertiary);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.submit-btn {
+  margin-top: 3rem;
+  font-family: "DMMono-Regular";
+  align-self: center;
+  border-radius: 3rem;
+  border: none;
+  padding: 1.5rem 4rem;
+  color: var(--white);
+  background-color: var(--secondary);
 }
