@@ -1,6 +1,7 @@
 import React from "react";
 
 interface Props {
+  name: string;
   clearGratifuels: () => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   input: string;
@@ -12,10 +13,11 @@ export const Form = ({
   handleSubmit,
   input,
   handleInputChange,
+  name,
 }: Props) => {
   return (
     <>
-      <h1 className="heading">Hi name.</h1>
+      <h1 className="heading">Hi {name}.</h1>
       <p>What are you grateful for today?</p>
       <button onClick={clearGratifuels}>Clear gratifuels</button>
 

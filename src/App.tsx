@@ -1,10 +1,26 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./App.css";
 import { Form } from "./screens/Form";
+import { Onboarding } from "./screens/Onboarding";
 
 function App() {
+  const [name, setName] = useState("");
   const [gratifuels, setGratifuels] = useState<string[]>([]);
   const [input, setInput] = useState("");
+
+  const getName = () => {
+    chrome.storage.sync.get(["name"], (data) => {
+      if (data.name) {
+        setName(data.name);
+      }
+    });
+  };
+
+  const handleSetName = (name: string) => setName(name);
+
+  useEffect(() => {
+    getName();
+  }, []);
 
   // chrome.runtime.onMessage.addListener(function (
   //   request,
@@ -21,7 +37,8 @@ function App() {
   // });
 
   const getGratifuels = () => {
-    chrome.storage.sync.get("gratifuels", (data) => {
+    chrome.storage.sync.get(["gratifuels"], (data) => {
+      console.log("gratifuel", data);
       if (data.gratifuels) {
         console.log(data.gratifuels);
         setGratifuels(data.gratifuels);
@@ -60,12 +77,17 @@ function App() {
         <h1 className="heading">Gratifuel</h1>
       </header>
       <main>
-        <Form
-          clearGratifuels={clearGratifuels}
-          handleSubmit={handleSubmit}
-          handleInputChange={handleInputChange}
-          input={input}
-        />
+        {!!name ? (
+          <Form
+            name={name}
+            clearGratifuels={clearGratifuels}
+            handleSubmit={handleSubmit}
+            handleInputChange={handleInputChange}
+            input={input}
+          />
+        ) : (
+          <Onboarding handleSetName={handleSetName} />
+        )}
         <ul>
           {gratifuels.map((g) => (
             <li>{g}</li>
