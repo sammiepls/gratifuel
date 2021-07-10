@@ -1,13 +1,29 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./App.css";
+import { Form } from "./screens/Form";
 
 function App() {
   const [gratifuels, setGratifuels] = useState<string[]>([]);
   const [input, setInput] = useState("");
 
+  // chrome.runtime.onMessage.addListener(function (
+  //   request,
+  //   sender,
+  //   sendResponse
+  // ) {
+  //       displayGratifuel();
+  //   console.log(
+  //     sender.tab
+  //       ? "from a content script:" + sender.tab.url
+  //       : "from the extension"
+  //   );
+  //   if (request.greeting === "hello") sendResponse({ farewell: "goodbye" });
+  // });
+
   const getGratifuels = () => {
     chrome.storage.sync.get("gratifuels", (data) => {
       if (data.gratifuels) {
+        console.log(data.gratifuels);
         setGratifuels(data.gratifuels);
       }
     });
@@ -26,10 +42,6 @@ function App() {
     getGratifuels();
   }, []);
 
-  useEffect(() => {
-    storeGratifuels();
-  }, [gratifuels, storeGratifuels]);
-
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) =>
     setInput(e.currentTarget.value);
 
@@ -37,6 +49,7 @@ function App() {
     e.preventDefault();
     if (input !== "") {
       setGratifuels((state) => [...state, input]);
+      storeGratifuels();
       setInput("");
     }
   };
@@ -47,19 +60,12 @@ function App() {
         <h1 className="heading">Gratifuel</h1>
       </header>
       <main>
-        <h1 className="heading">Hi name.</h1>
-        <p>What are you grateful for today?</p>
-        <button onClick={clearGratifuels}>Clear gratifuels</button>
-
-        <form onSubmit={handleSubmit}>
-          <input
-            value={input}
-            onChange={handleInputChange}
-            type="text"
-            placeholder="I am doing okay"
-          />
-          <button className="submit-btn">I am grateful!</button>
-        </form>
+        <Form
+          clearGratifuels={clearGratifuels}
+          handleSubmit={handleSubmit}
+          handleInputChange={handleInputChange}
+          input={input}
+        />
         <ul>
           {gratifuels.map((g) => (
             <li>{g}</li>
